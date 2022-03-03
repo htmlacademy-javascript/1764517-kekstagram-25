@@ -33,33 +33,36 @@ const PHOTO_DESCRIPTIONS = [
   'Фантазия кончилась',
 ];
 
-const PHOTO = [];
-
-const CREATE_COMMENT = (commentId) => ({
+const createComment = (commentId) => ({
   id: commentId,
   avatar: `img/avatar-${  getRandomNumber(1, 6)  }.svg`,
   message: COMMENTS[getRandomNumber(0, COMMENTS.length -1)],
   name: NAMES[getRandomNumber(0, NAMES.length -1)],
 });
 
-const RANDOM_COMMENT = () => {
+const getRandomComments = () => {
   const comment = [];
   for (let i = 1; i <= getRandomNumber(1, 3); i++) {
-    comment.push(CREATE_COMMENT(i));
+    comment.push(createComment(i));
   }
   return comment;
 };
 
-const CREATE_PHOTO = (photoId) => ({
+const createPhotos = (photoId) => ({
   id: photoId,
   url: `photos/${  photoId  }.jpg`,
   description: PHOTO_DESCRIPTIONS[getRandomNumber(0, PHOTO_DESCRIPTIONS.length -1)],
   likes: getRandomNumber(15, 200),
-  comment: RANDOM_COMMENT(),
+  comment: getRandomComments(),
 });
 
-for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
-  PHOTO.push(CREATE_PHOTO(i));
-}
 
-export {PHOTO};
+const generatePhotos = () => {
+  const photos = [];
+  for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
+    photos.push(createPhotos(i));
+  }
+  return photos;
+};
+
+export {generatePhotos};

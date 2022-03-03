@@ -14,6 +14,4 @@ function getCheckString (string, maxLength) {
   return false;
 }
 
-getCheckString('Привет, кекс', 140);
-
-export {getRandomNumber};
+export {getRandomNumber, getCheckString};
