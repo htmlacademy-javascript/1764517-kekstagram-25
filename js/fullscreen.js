@@ -1,19 +1,23 @@
-import {getMiniature} from './miniature.js';
+import {generatePhotos} from './data.js';
+
 
 const bigPicture = document.querySelector('.big-picture');
 const photoMiniature = document.querySelector('.pictures');
 const closeBigPicture = document.querySelector('.big-picture__cancel');
+const miniature = generatePhotos()[0];
 
-photoMiniature.onclick = () => {
-  bigPicture.classList.remove('hidden');
+const openPicture = () => {
+  bigPicture.querySelector('.big-picture__img img').src = miniature.url;
+  bigPicture.querySelector('.likes-count').textContent = miniature.likes;
+  bigPicture.querySelector('.comments-count').textContent = miniature.comment.length;
+  bigPicture.querySelector('.social__caption').textContent = miniature.description;
+
+  photoMiniature.onclick = () => {
+    bigPicture.classList.remove('hidden');
+  };
+  closeBigPicture.onclick = () => {
+    bigPicture.classList.add('hidden');
+  };
 };
 
-closeBigPicture.onclick = () => {
-  bigPicture.classList.add('hidden');
-};
-
-const miniature = getMiniature();
-
-const bigPictureImage = document.querySelector('.big-picture__img');
-
-bigPictureImage.querySelector('img').src = miniature.src;
+export{openPicture};
