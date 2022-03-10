@@ -1,2 +1,2 @@
-import {getMiniature} from './miniature.js';
-getMiniature();
+import {addMiniatures} from './miniature.js';
+addMiniatures();

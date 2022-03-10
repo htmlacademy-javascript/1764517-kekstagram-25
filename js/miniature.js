@@ -4,7 +4,7 @@ const similarListElement = document.querySelector('.pictures');
 const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const similarPhotos = generatePhotos();
 
-const getMiniature = () => {
+const addMiniatures = () => {
   const similarListFragment = document.createDocumentFragment();
   similarPhotos.forEach(({url, likes, comment}) => {
     const userPhoto = similarPhotoTemplate.cloneNode(true);
@@ -16,4 +16,4 @@ const getMiniature = () => {
   similarListElement.appendChild(similarListFragment);
 };
 
-export{getMiniature};
+export{addMiniatures};
