@@ -42,7 +42,7 @@ const createComment = (commentId) => ({
 
 const getRandomComments = () => {
   const comment = [];
-  for (let i = 1; i <= getRandomNumber(1, 3); i++) {
+  for (let i = 1; i <= getRandomNumber(1, 5); i++) {
     comment.push(createComment(i));
   }
   return comment;
