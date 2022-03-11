@@ -11,16 +11,17 @@ const comentsList = document.querySelector('.social__comments');
 const getCommentElement = () => {
   const commentItem = comentsList.createElement('li');
   const commentAvatar = commentItem.createElement('img');
+  const commentText = commentItem.createElement('p');
+  const comment = miniature.comment;
   commentItem.classList.add('social__comment');
   comentsList.appendChild(commentItem);
   commentAvatar.classList.add('social__picture');
-  commentAvatar.src = miniature.avatar;
-  commentAvatar.alt = miniature.name;
+  commentAvatar.src = comment[0].avatar;
+  commentAvatar.alt = comment[0].name;
   commentAvatar.width = 35;
   commentAvatar.height = 35;
+  commentText.textContent = comment[0].message;
 
-  const commentText = commentItem.createElement('p');
-  commentText.textContent = miniature.message;
 
   commentItem.appendChild(commentAvatar, commentText);
 };
