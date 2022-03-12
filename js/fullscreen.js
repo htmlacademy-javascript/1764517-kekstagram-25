@@ -1,6 +1,3 @@
-import {generatePhotos} from './data.js';
-
-
 const bigPicture = document.querySelector('.big-picture');
 const photoMiniature = document.querySelector('.pictures');
 const closeBigPicture = document.querySelector('.big-picture__cancel');
@@ -9,38 +6,37 @@ const commentCounter = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 
-const miniature = generatePhotos()[0];
 const commentsList = document.querySelector('.social__comments');
 
-const getCommentElement = () => {
+const getCommentElement = (miniature) => {
   while (commentsList.firstChild) {
     commentsList.removeChild(commentsList.firstChild);
   }
+  const comments = miniature.comments;
 
-  const commentItem = document.createElement('li');
-  commentItem.classList.add('social__comment');
-  commentsList.appendChild(commentItem);
-
-  const comment = miniature.comment;
-  const commentAvatar = document.createElement('img');
-  commentAvatar.classList.add('social__picture');
-  commentAvatar.src = comment[0].avatar;
-  commentAvatar.alt = comment[0].name;
-  commentAvatar.width = 35;
-  commentAvatar.height = 35;
-  commentItem.appendChild(commentAvatar);
-
-  const commentText = document.createElement('p');
-  commentText.textContent = comment[0].message;
-  commentItem.appendChild(commentText);
+  comments.forEach((comment) => {
+    const commentItem = document.createElement('li');
+    commentItem.classList.add('social__comment');
+    commentsList.appendChild(commentItem);
+    const commentAvatar = document.createElement('img');
+    commentAvatar.classList.add('social__picture');
+    commentAvatar.src = comment.avatar;
+    commentAvatar.alt = comment.name;
+    commentAvatar.width = 35;
+    commentAvatar.height = 35;
+    commentItem.appendChild(commentAvatar);
+    const commentText = document.createElement('p');
+    commentText.textContent = comment.message;
+    commentItem.appendChild(commentText);
+  });
 };
 
-const openPicture = () => {
+const openPicture = (miniature) => {
   bigPicture.querySelector('.big-picture__img img').src = miniature.url;
   bigPicture.querySelector('.likes-count').textContent = miniature.likes;
-  bigPicture.querySelector('.comments-count').textContent = miniature.comment.length;
+  bigPicture.querySelector('.comments-count').textContent = miniature.comments.length;
   bigPicture.querySelector('.social__caption').textContent = miniature.description;
-  getCommentElement();
+  getCommentElement(miniature);
 
   photoMiniature.onclick = () => {
     bigPicture.classList.remove('hidden');
