@@ -14,4 +14,6 @@ function getCheckString (string, maxLength) {
   return false;
 }
 
-export {getRandomNumber, getCheckString};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomNumber, getCheckString, isEscapeKey};

@@ -1,7 +1,7 @@
-const bigPicture = document.querySelector('.big-picture');
-const photoMiniature = document.querySelector('.pictures');
-const closeBigPicture = document.querySelector('.big-picture__cancel');
+import {isEscapeKey} from './util.js';
 
+const bigPicture = document.querySelector('.big-picture');
+const closeBigPicture = document.querySelector('.big-picture__cancel');
 const commentCounter = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
@@ -38,28 +38,29 @@ const openPicture = (miniature) => {
   bigPicture.querySelector('.social__caption').textContent = miniature.description;
   getCommentElement(miniature);
 
-  photoMiniature.onclick = () => {
-    bigPicture.classList.remove('hidden');
-    commentCounter.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
-    body.classList.add('modal-open');
-  };
+  bigPicture.classList.remove('hidden');
+  commentCounter.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+  body.classList.add('modal-open');
 
-  closeBigPicture.onclick = () => {
-    bigPicture.classList.add('hidden');
-    commentCounter.classList.remove('hidden');
-    commentsLoader.classList.remove('hidden');
-    body.classList.remove('modal-open');
-  };
-
-  body.addEventListener('keydown', (event) => {
-    if (event.code === 'Escape') {
+  const closePhoto = () => {
+    closeBigPicture.addEventListener ('click', () => {
       bigPicture.classList.add('hidden');
       commentCounter.classList.remove('hidden');
       commentsLoader.classList.remove('hidden');
       body.classList.remove('modal-open');
-    }
-  });
+    });
+    body.addEventListener('keydown', (evt) => {
+      if (isEscapeKey(evt)) {
+        evt.preventDefault();
+        bigPicture.classList.add('hidden');
+        commentCounter.classList.remove('hidden');
+        commentsLoader.classList.remove('hidden');
+        body.classList.remove('modal-open');
+      }
+    });
+  };
+  closePhoto();
 };
 
 export{openPicture};
