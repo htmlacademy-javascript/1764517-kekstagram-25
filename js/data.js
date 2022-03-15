@@ -42,7 +42,7 @@ const createComment = (commentId) => ({
 
 const getRandomComments = () => {
   const comment = [];
-  for (let i = 1; i <= getRandomNumber(1, 3); i++) {
+  for (let i = 1; i <= getRandomNumber(1, 5); i++) {
     comment.push(createComment(i));
   }
   return comment;
@@ -53,7 +53,7 @@ const createPhotos = (photoId) => ({
   url: `photos/${  photoId  }.jpg`,
   description: PHOTO_DESCRIPTIONS[getRandomNumber(0, PHOTO_DESCRIPTIONS.length -1)],
   likes: getRandomNumber(15, 200),
-  comment: getRandomComments(),
+  comments: getRandomComments(),
 });
 
 
