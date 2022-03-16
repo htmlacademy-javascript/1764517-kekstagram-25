@@ -44,23 +44,20 @@ const openPicture = (miniature) => {
   body.classList.add('modal-open');
 
   const closePhoto = () => {
-    closeBigPicture.addEventListener ('click', () => {
-      bigPicture.classList.add('hidden');
-      commentCounter.classList.remove('hidden');
-      commentsLoader.classList.remove('hidden');
-      body.classList.remove('modal-open');
-    });
-    body.addEventListener('keydown', (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        bigPicture.classList.add('hidden');
-        commentCounter.classList.remove('hidden');
-        commentsLoader.classList.remove('hidden');
-        body.classList.remove('modal-open');
-      }
-    });
+    bigPicture.classList.add('hidden');
+    commentCounter.classList.remove('hidden');
+    commentsLoader.classList.remove('hidden');
+    body.classList.remove('modal-open');
   };
-  closePhoto();
+  closeBigPicture.addEventListener ('click', () => {
+    closePhoto();
+  });
+
+  body.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      closePhoto();
+    }
+  });
 };
 
 export{openPicture};
