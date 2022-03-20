@@ -661,6 +661,9 @@ main {
  */
 
 .text {
+  display: flex;
+  flex-direction: column;
+
   margin: 0;
   padding: 0;
   margin-bottom: 30px;
@@ -681,6 +684,15 @@ main {
   color: #000000;
 
   border-radius: 5px;
+
+}
+
+.text__error {
+  font-size: 14px;
+  color: #e90000;
+  max-width: 450px;
+  text-align: center;
+  margin: 10px auto 0;
 }
 
 .text__description {
