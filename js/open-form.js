@@ -9,7 +9,6 @@ const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const scaleValue = document.querySelector('.scale__control');
-
 const regExp = /^#[a-zа-яё0-9]+$/i;
 
 const closeForm = () => {
@@ -39,6 +38,9 @@ function validateHashtags (value) {
   }
 
   for (let i = 0; i <= arrayHashtags.length -1; i++) {
+    if (arrayHashtags[i] === '') {
+      return true;
+    }
     if (!regExp.test(arrayHashtags[i])) {
       return false;
     }
@@ -54,7 +56,6 @@ function validateHashtags (value) {
   }
   return true;
 }
-
 
 function validateDescription () {
   if (getCheckString(description.value, 140)) {
@@ -78,7 +79,6 @@ form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
-
 
 const openForm = () => {
   uploadFile.addEventListener('change', () => {
