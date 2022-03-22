@@ -55,7 +55,6 @@ const openPicture = (miniature) => {
 
   body.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
-      evt.preventDefault();
       closePhoto();
     }
   });
