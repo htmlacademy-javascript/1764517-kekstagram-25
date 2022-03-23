@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {getCheckString} from './util.js';
+import {applyingFilter} from './filter-switch.js';
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -30,6 +31,7 @@ const scale = () => {
     } else {
       scaleValue.value = scaleValue.value - scaleStep;
       scaleSmallerButton.disabled = false;
+      scaleBiggerButton.disabled = false;
     }
   });
   scaleBiggerButton.addEventListener('click', () => {
@@ -39,8 +41,24 @@ const scale = () => {
     } else {
       scaleValue.value = +scaleValue.value + scaleStep;
       scaleBiggerButton.disabled = false;
+      scaleSmallerButton.disabled = false;
     }
   });
+
+  // scaleValue.addEventListener('input', () => {
+  //   if (scaleValue.value === 25) {
+  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.25);
+  //   }
+  //   if (scaleValue.value === 50) {
+  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.50);
+  //   }
+  //   if (scaleValue.value === 75) {
+  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.75);
+  //   }
+  //   if (scaleValue.value === 100) {
+  //     document.querySelector('.img-upload__preview img').style.transform = scale(1);
+  //   }
+  // });
 };
 
 
@@ -151,6 +169,7 @@ const openForm = () => {
   });
 
   scale();
+  applyingFilter();
 };
 
 export {openForm};
