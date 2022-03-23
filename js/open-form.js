@@ -8,8 +8,44 @@ const closeFormButton = document.getElementById('upload-cancel');
 const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
-const scaleValue = document.querySelector('.scale__control');
+const scaleValue = document.querySelector('.scale__control--value');
 const regExp = /^#[a-zа-яё0-9]+$/i;
+// const percent = '%';
+scaleValue.value = 100;
+
+
+// _____________________________________________
+
+const scaleSmallerButton = document.querySelector('.scale__control--smaller');
+const scaleBiggerButton = document.querySelector('.scale__control--bigger');
+const scaleStep = 25;
+const maxScale = 100;
+const minScale = 25;
+
+const scale = () => {
+  scaleSmallerButton.addEventListener('click', () => {
+    if (Number(scaleValue.value) === minScale) {
+      scaleSmallerButton.disabled = true;
+      scaleBiggerButton.disabled = false;
+    } else {
+      scaleValue.value = scaleValue.value - scaleStep;
+      scaleSmallerButton.disabled = false;
+    }
+  });
+  scaleBiggerButton.addEventListener('click', () => {
+    if (Number(scaleValue.value) === maxScale) {
+      scaleBiggerButton.disabled = true;
+      scaleSmallerButton.disabled = false;
+    } else {
+      scaleValue.value = +scaleValue.value + scaleStep;
+      scaleBiggerButton.disabled = false;
+    }
+  });
+};
+
+
+// _____________________________________________
+
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
@@ -17,7 +53,7 @@ const closeForm = () => {
   uploadFile.value = '';
   hashtags.value = '';
   description.value = '';
-  scaleValue.value = '55%';
+  scaleValue.value = 100;
 };
 
 const pristine = new Pristine(form, {
@@ -113,6 +149,8 @@ const openForm = () => {
   description.addEventListener('focusout', () => {
     body.addEventListener('keydown', close);
   });
+
+  scale();
 };
 
 export {openForm};
