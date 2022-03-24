@@ -1,6 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {getCheckString} from './util.js';
-import {applyingFilter} from './filter-switch.js';
+import './filter-switch.js';
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -167,9 +167,7 @@ const openForm = () => {
   description.addEventListener('focusout', () => {
     body.addEventListener('keydown', close);
   });
-
   scale();
-  applyingFilter();
 };
 
 export {openForm};

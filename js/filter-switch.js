@@ -1,34 +1,23 @@
+const form = document.getElementById('upload-select-image');
 const effectValueInput = document.querySelector('.effect-level__value');
+const effectLevel = document.querySelector('.effect-level');
 const sliderEffect = document.querySelector('.effect-level__slider');
-const effectsList = document.querySelector('.effects__list');
 const imagePreview = document.querySelector('.img-upload__preview img');
 
-// const createSlider = (min, max, start, step) => {
-//   noUiSlider.create(sliderEffect, {
-//     range: {
-//       min: min,
-//       max: max,
-//     },
-//     start: start,
-//     step: step,
-//     connect: 'lower',
-//   });
+const noneFilterPreview = document.getElementById('effect-none');
+const chromeFilterPreview = document.getElementById('effect-chrome');
+const sepiaFilterPreview = document.getElementById('effect-sepia');
+const marvinFilterPreview = document.getElementById('effect-marvin');
+const phobosFilterPreview = document.getElementById('effect-phobos');
+const heatFilterPreview = document.getElementById('effect-heat');
 
-//   sliderEffect.noUiSlider.on('update', () => {
-//     effectValueInput.value = sliderEffect.noUiSlider.get();
-//   });
-// };
+const filterChrome = 'effects__preview--chrome';
+const filterSepia = 'effects__preview--sepia';
+const filterMarvin = 'effects__preview--marvin';
+const filterPhobos = 'effects__preview--phobos';
+const filterHeat = 'effects__preview--heat';
 
-const noneFilter = document.getElementById('effect-none');
-const chromeFilter = document.getElementById('effect-chrome');
-const sepiaFilter = document.getElementById('effect-sepia');
-const marvinFilter = document.getElementById('effect-marvin');
-const phobosFilter = document.getElementById('effect-phobos');
-const heatFilter = document.getElementById('effect-heat');
-
-// if (noneFilter.hasAttribute('checked')) {
-//   createSlider.destruction();
-// }
+// ___________________________________________
 
 noUiSlider.create(sliderEffect, {
   range: {
@@ -44,32 +33,88 @@ sliderEffect.noUiSlider.on('update', () => {
   effectValueInput.value = sliderEffect.noUiSlider.get();
 });
 
-const applyingFilter = () => {
-  noneFilter.addEventListener('change', (evt) => {
-    if (evt.target.checked) {
-      sliderEffect.noUiSlider.updateOption({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        start: 1,
-        step: 0.1,
-      });
-    } else {
-      sliderEffect.noUiSlider.destroy();
-    }
+form.addEventListener('change', () => {
+  if (noneFilterPreview.checked) {
+    effectLevel.classList.add('hidden');
+  }
+  if (imagePreview.classList.contains(filterChrome)) {
+    effectLevel.classList.remove('hidden');
+    sliderEffect.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 1,
+      step: 0.1,
+    });
+  }
+  if (imagePreview.classList.contains(filterSepia)) {
+    effectLevel.classList.remove('hidden');
+    sliderEffect.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 1,
+      },
+      start: 1,
+      step: 0.1,
+    });
+  }
+  if (imagePreview.classList.contains(filterMarvin)) {
+    effectLevel.classList.remove('hidden');
+    sliderEffect.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 100,
+      },
+      start: 100,
+      step: 1,
+    });
+  }
+  if (imagePreview.classList.contains(filterPhobos)) {
+    effectLevel.classList.remove('hidden');
+    sliderEffect.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 3,
+      },
+      start: 3,
+      step: 0.1,
+    });
+  }
+  if (imagePreview.classList.contains(filterHeat)) {
+    effectLevel.classList.remove('hidden');
+    sliderEffect.noUiSlider.updateOptions({
+      range: {
+        min: 1,
+        max: 3,
+      },
+      start: 3,
+      step: 0.1,
+    });
+  }
+});
+
+// __________________________________________
+
+
+const applyFilter = (filter, filterEffect) => {
+  form.addEventListener('change', () => {
+    filter.addEventListener('click', () => {
+      imagePreview.removeAttribute('class');
+      imagePreview.classList.add(filterEffect);
+    });
+  });
+
+  form.addEventListener('change', () => {
+    noneFilterPreview.addEventListener('click', () => {
+      imagePreview.removeAttribute('class');
+    });
   });
 };
 
-// const applyingFilter = () => {
-//   effectsList.addEventListener ('change', () => {
-//     if (chromeFilter.hasAttribute('checked')) {
-//       createSlider(0, 1, 1, 0.1);
-//       imagePreview.classList.add('.effects__preview--chrome');
-//     } else {
-//       imagePreview.classList.remove('.effects__preview--chrome');
-//     }
-//   });
-// };
 
-export {applyingFilter};
+applyFilter(chromeFilterPreview, filterChrome);
+applyFilter(sepiaFilterPreview, filterSepia);
+applyFilter(marvinFilterPreview, filterMarvin);
+applyFilter(phobosFilterPreview, filterPhobos);
+applyFilter(heatFilterPreview, filterHeat);
