@@ -10,6 +10,7 @@ const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const scaleValue = document.querySelector('.scale__control--value');
+const imagePreview = document.querySelector('.img-upload__preview img');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 // const percent = '%';
 scaleValue.value = 100;
@@ -19,6 +20,7 @@ scaleValue.value = 100;
 
 const scaleSmallerButton = document.querySelector('.scale__control--smaller');
 const scaleBiggerButton = document.querySelector('.scale__control--bigger');
+const scaleFieldset = document.querySelector('.scale');
 const scaleStep = 25;
 const maxScale = 100;
 const minScale = 25;
@@ -45,25 +47,21 @@ const scale = () => {
     }
   });
 
-  // scaleValue.addEventListener('input', () => {
-  //   if (scaleValue.value === 25) {
-  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.25);
-  //   }
-  //   if (scaleValue.value === 50) {
-  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.50);
-  //   }
-  //   if (scaleValue.value === 75) {
-  //     document.querySelector('.img-upload__preview img').style.transform = scale(0.75);
-  //   }
-  //   if (scaleValue.value === 100) {
-  //     document.querySelector('.img-upload__preview img').style.transform = scale(1);
-  //   }
-  // });
+  scaleFieldset.addEventListener('click', () => {
+    if (scaleValue.value === '25') {
+      imagePreview.style = 'transform: scale(0.25)';
+    }
+    if (scaleValue.value === '50') {
+      imagePreview.style = 'transform: scale(0.50)';
+    }
+    if (scaleValue.value === '75') {
+      imagePreview.style = 'transform: scale(0.75)';
+    }
+    if (scaleValue.value === '100') {
+      imagePreview.style = 'transform: scale(1)';
+    }
+  });
 };
-
-
-// _____________________________________________
-
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
