@@ -1,6 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {getCheckString} from './util.js';
-import './filter-switch.js';
+import {filterSettings, scale} from './filter-settings.js';
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -9,59 +9,7 @@ const closeFormButton = document.getElementById('upload-cancel');
 const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
-const scaleValue = document.querySelector('.scale__control--value');
-const imagePreview = document.querySelector('.img-upload__preview img');
 const regExp = /^#[a-zа-яё0-9]+$/i;
-// const percent = '%';
-scaleValue.value = 100;
-
-
-// _____________________________________________
-
-const scaleSmallerButton = document.querySelector('.scale__control--smaller');
-const scaleBiggerButton = document.querySelector('.scale__control--bigger');
-const scaleFieldset = document.querySelector('.scale');
-const scaleStep = 25;
-const maxScale = 100;
-const minScale = 25;
-
-const scale = () => {
-  scaleSmallerButton.addEventListener('click', () => {
-    if (Number(scaleValue.value) === minScale) {
-      scaleSmallerButton.disabled = true;
-      scaleBiggerButton.disabled = false;
-    } else {
-      scaleValue.value = scaleValue.value - scaleStep;
-      scaleSmallerButton.disabled = false;
-      scaleBiggerButton.disabled = false;
-    }
-  });
-  scaleBiggerButton.addEventListener('click', () => {
-    if (Number(scaleValue.value) === maxScale) {
-      scaleBiggerButton.disabled = true;
-      scaleSmallerButton.disabled = false;
-    } else {
-      scaleValue.value = +scaleValue.value + scaleStep;
-      scaleBiggerButton.disabled = false;
-      scaleSmallerButton.disabled = false;
-    }
-  });
-
-  scaleFieldset.addEventListener('click', () => {
-    if (scaleValue.value === '25') {
-      imagePreview.style = 'transform: scale(0.25)';
-    }
-    if (scaleValue.value === '50') {
-      imagePreview.style = 'transform: scale(0.50)';
-    }
-    if (scaleValue.value === '75') {
-      imagePreview.style = 'transform: scale(0.75)';
-    }
-    if (scaleValue.value === '100') {
-      imagePreview.style = 'transform: scale(1)';
-    }
-  });
-};
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
@@ -69,7 +17,6 @@ const closeForm = () => {
   uploadFile.value = '';
   hashtags.value = '';
   description.value = '';
-  scaleValue.value = 100;
 };
 
 const pristine = new Pristine(form, {
@@ -136,6 +83,8 @@ const openForm = () => {
   uploadFile.addEventListener('change', () => {
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
+    scale();
+    filterSettings();
   });
 
   closeFormButton.addEventListener('click', () => {
@@ -165,7 +114,6 @@ const openForm = () => {
   description.addEventListener('focusout', () => {
     body.addEventListener('keydown', close);
   });
-  scale();
 };
 
 export {openForm};
