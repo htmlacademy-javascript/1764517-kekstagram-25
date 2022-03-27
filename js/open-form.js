@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {getCheckString} from './util.js';
+import {filterSettings, scale} from './filter-settings.js';
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -8,7 +9,6 @@ const closeFormButton = document.getElementById('upload-cancel');
 const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
-const scaleValue = document.querySelector('.scale__control');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 
 const closeForm = () => {
@@ -17,7 +17,6 @@ const closeForm = () => {
   uploadFile.value = '';
   hashtags.value = '';
   description.value = '';
-  scaleValue.value = '55%';
 };
 
 const pristine = new Pristine(form, {
@@ -84,6 +83,8 @@ const openForm = () => {
   uploadFile.addEventListener('change', () => {
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
+    scale();
+    filterSettings();
   });
 
   closeFormButton.addEventListener('click', () => {
