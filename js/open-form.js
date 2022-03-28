@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {getCheckString} from './util.js';
+import {getCheckString, showAlert} from './util.js';
 import {filterSettings, scale} from './filter-settings.js';
 
 const form = document.getElementById('upload-select-image');
@@ -73,11 +73,32 @@ pristine.addValidator(
   validateDescription,
   'максимум 140 символов');
 
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const setUserFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      fetch(
+        'https://25.javascript.pages.academy/kekstagram',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            onSuccess();
+          } else {
+            showAlert('Не удалось отправить форму. Попробуйте еще раз');
+          }
+        })
+        .catch(() => {
+          showAlert('Не удалось отправить форму. Попробуйте еще раз');
+        });
+    }
+  });
+};
 
 const openForm = () => {
   uploadFile.addEventListener('change', () => {
@@ -96,6 +117,8 @@ const openForm = () => {
       closeForm();
     }
   };
+
+  setUserFormSubmit(closeForm);
 
   body.addEventListener('keydown', close);
 

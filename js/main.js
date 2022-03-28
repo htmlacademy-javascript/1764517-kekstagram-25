@@ -1,5 +1,4 @@
-import {addMiniatures} from './miniature.js';
+import './data-processing.js';
 import {openForm} from './open-form.js';
-addMiniatures();
 openForm();
 

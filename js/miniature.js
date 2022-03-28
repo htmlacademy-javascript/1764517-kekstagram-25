@@ -1,11 +1,9 @@
-import {generatePhotos} from './data.js';
 import {openPicture} from './fullscreen.js';
 
 const similarListElement = document.querySelector('.pictures');
 const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const similarPhotos = generatePhotos();
 
-const addMiniatures = () => {
+const renderMiniatures = (similarPhotos) => {
   const similarListFragment = document.createDocumentFragment();
   similarPhotos.forEach((photo) => {
     const userPhoto = similarPhotoTemplate.cloneNode(true);
@@ -21,4 +19,4 @@ const addMiniatures = () => {
   similarListElement.appendChild(similarListFragment);
 };
 
-export{addMiniatures};
+export{renderMiniatures};
