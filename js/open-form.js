@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {getCheckString, showAlert} from './util.js';
+import {getCheckString, showError, showSuccess} from './util.js';
 import {filterSettings, scale} from './filter-settings.js';
 import {sendData} from './api.js';
 
@@ -10,6 +10,7 @@ const closeFormButton = document.getElementById('upload-cancel');
 const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 
 const closeForm = () => {
@@ -74,14 +75,33 @@ pristine.addValidator(
   validateDescription,
   'максимум 140 символов');
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 const setUserFormSubmit = (onSuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
+
     const isValid = pristine.validate();
     if (isValid) {
+      blockSubmitButton();
       sendData(
-        () => onSuccess(),
-        () => showAlert('Не удалось отправить форму. Попробуйте еще раз'),
+        () => {
+          onSuccess();
+          showSuccess();
+          unblockSubmitButton();
+        },
+        () => {
+          showError();
+          unblockSubmitButton();
+        },
         new FormData(evt.target),
       );
     }

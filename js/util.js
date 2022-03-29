@@ -16,25 +16,32 @@ function getCheckString (string, maxLength) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const ALERT_SHOW_TIME = 5000;
+const errorTamplate = document.querySelector('#error').content.querySelector('.error');
+const showError = () => {
+  const errorFragment = document.createDocumentFragment();
+  const error = errorTamplate.cloneNode(true);
+  errorFragment.append(error);
+  document.body.append(errorFragment);
 
-const showAlert = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
-  alertContainer.textContent = message;
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+  const errorButton = document.querySelector('.error__button');
+  const closeError = () => document.querySelector('.error').remove();
+  errorButton.addEventListener('click', () => {
+    closeError();
+  });
 };
 
-export {getRandomNumber, getCheckString, isEscapeKey, showAlert};
+const successTamplate = document.querySelector('#success').content.querySelector('.success');
+const showSuccess = () => {
+  const successFragment = document.createDocumentFragment();
+  const success = successTamplate.cloneNode(true);
+  successFragment.append(success);
+  document.body.append(successFragment);
+
+  const successButton = document.querySelector('.success__button');
+  const closeSuccess = () => document.querySelector('.success').remove();
+  successButton.addEventListener('click', () => {
+    closeSuccess();
+  });
+};
+
+export {getRandomNumber, getCheckString, isEscapeKey, showError, showSuccess};
