@@ -16,78 +16,40 @@ function getCheckString (string, maxLength) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-
 const errorTamplate = document.querySelector('#error').content.querySelector('.error');
-// const errorButton = document.querySelector('.error__button');
-// const errorMessage = document.querySelector('.error');
-
 const successTamplate = document.querySelector('#success').content.querySelector('.success');
-// const successButton = document.querySelector('.success__button');
-// const successMessage = document.querySelector('.success');
 
+const showMessage = (template) => {
+  const fragment = document.createDocumentFragment();
+  const message = template.cloneNode(true);
+  fragment.append(message);
+  document.body.append(fragment);
 
-// const showMessage = (template, button, infoMessage) => {
-//   const fragment = document.createDocumentFragment();
-//   const message = template.cloneNode(true);
-//   fragment.append(message);
-//   document.body.append(fragment);
-
-//   const closeMessage = () => infoMessage.remove();
-//   button.addEventListener('click', () => {
-//     closeMessage();
-//   });
-//   const closeEsc = (evt) => {
-//     if (isEscapeKey(evt)) {
-//       closeMessage();
-//     }
-//   };
-//   document.body.addEventListener('keydown', closeEsc);
-// };
-
-// const showError = () => {
-//   showMessage(errorTamplate, errorButton, errorMessage);
-// };
-
-// const showSuccess = () => {
-//   showMessage(successTamplate, successButton, successMessage);
-// };
-
-const showError = () => {
-  const errorFragment = document.createDocumentFragment();
-  const error = errorTamplate.cloneNode(true);
-  errorFragment.append(error);
-  document.body.append(errorFragment);
-
-  const errorButton = document.querySelector('.error__button');
-  const closeError = () => document.querySelector('.error').remove();
-  errorButton.addEventListener('click', () => {
-    closeError();
+  const button = message.querySelector('[type="button"]');
+  const closeMessage = () => message.remove();
+  button.addEventListener('click', () => {
+    closeMessage();
   });
-  const close = (evt) => {
+  const closeEsc = (evt) => {
     if (isEscapeKey(evt)) {
-      closeError();
+      closeMessage();
     }
   };
-  document.addEventListener('keydown', close);
+  message.addEventListener('click', (evt) => {
+    if (!evt.target.children[1]) {
+      closeMessage();
+    }
+  });
+
+  document.body.addEventListener('keydown', closeEsc);
+};
+
+const showError = () => {
+  showMessage(errorTamplate);
 };
 
 const showSuccess = () => {
-  const successFragment = document.createDocumentFragment();
-  const success = successTamplate.cloneNode(true);
-  successFragment.append(success);
-  document.body.append(successFragment);
-
-  const successButton = document.querySelector('.success__button');
-  const closeSuccess = () => document.querySelector('.success').remove();
-  successButton.addEventListener('click', () => {
-    closeSuccess();
-  });
-  const close = (evt) => {
-    if (isEscapeKey(evt)) {
-      closeSuccess();
-    }
-  };
-  document.addEventListener('keydown', close);
+  showMessage(successTamplate);
 };
 
 export {getRandomNumber, getCheckString, isEscapeKey, showError, showSuccess};

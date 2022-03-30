@@ -11,14 +11,16 @@ const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
+const imagePreview = document.querySelector('.img-upload__preview img');
+const scaleValue = document.querySelector('.scale__control--value');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  uploadFile.value = '';
-  hashtags.value = '';
-  description.value = '';
+  imagePreview.removeAttribute('class');
+  imagePreview.removeAttribute('style');
+  form.reset();
 };
 
 const pristine = new Pristine(form, {
@@ -101,6 +103,7 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           showError();
           unblockSubmitButton();
+          closeForm();
         },
         new FormData(evt.target),
       );
@@ -110,10 +113,9 @@ const setUserFormSubmit = (onSuccess) => {
 
 const openForm = () => {
   uploadFile.addEventListener('change', () => {
+    scaleValue.value = '100%';
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
-    scale();
-    filterSettings();
   });
 
   closeFormButton.addEventListener('click', () => {
@@ -145,6 +147,9 @@ const openForm = () => {
   description.addEventListener('focusout', () => {
     body.addEventListener('keydown', close);
   });
+
+  scale();
+  filterSettings();
 };
 
 export {openForm};
