@@ -1,5 +1,8 @@
-import {addMiniatures} from './miniature.js';
+import {getData} from './api.js';
 import {openForm} from './open-form.js';
-addMiniatures();
+import {renderMiniatures} from './miniature.js';
+
+getData(renderMiniatures);
 openForm();
+
 

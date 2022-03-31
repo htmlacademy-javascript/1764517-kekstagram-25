@@ -6,14 +6,14 @@ const imagePreview = document.querySelector('.img-upload__preview img');
 const effectList = document.querySelector('.effects__list');
 const scaleValue = document.querySelector('.scale__control--value');
 
+scaleValue.value = '100%';
+
 const noneFilterPreview = document.getElementById('effect-none');
 const filterChrome = 'effects__preview--chrome';
 const filterSepia = 'effects__preview--sepia';
 const filterMarvin = 'effects__preview--marvin';
 const filterPhobos = 'effects__preview--phobos';
 const filterHeat = 'effects__preview--heat';
-
-scaleValue.value = '100%';
 
 const scaleSmallerButton = document.querySelector('.scale__control--smaller');
 const scaleBiggerButton = document.querySelector('.scale__control--bigger');

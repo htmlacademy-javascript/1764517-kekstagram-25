@@ -1,6 +1,7 @@
 import {isEscapeKey} from './util.js';
-import {getCheckString} from './util.js';
+import {getCheckString, showError, showSuccess} from './util.js';
 import {filterSettings, scale} from './filter-settings.js';
+import {sendData} from './api.js';
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -9,14 +10,17 @@ const closeFormButton = document.getElementById('upload-cancel');
 const body = document.querySelector('body');
 const hashtags = document.querySelector('.text__hashtags');
 const description = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
+const imagePreview = document.querySelector('.img-upload__preview img');
+const scaleValue = document.querySelector('.scale__control--value');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  uploadFile.value = '';
-  hashtags.value = '';
-  description.value = '';
+  imagePreview.removeAttribute('class');
+  imagePreview.removeAttribute('style');
+  form.reset();
 };
 
 const pristine = new Pristine(form, {
@@ -73,18 +77,45 @@ pristine.addValidator(
   validateDescription,
   'максимум 140 символов');
 
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          showSuccess();
+          unblockSubmitButton();
+        },
+        () => {
+          showError();
+          unblockSubmitButton();
+          closeForm();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
 
 const openForm = () => {
   uploadFile.addEventListener('change', () => {
+    scaleValue.value = '100%';
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
-    scale();
-    filterSettings();
   });
 
   closeFormButton.addEventListener('click', () => {
@@ -96,6 +127,8 @@ const openForm = () => {
       closeForm();
     }
   };
+
+  setUserFormSubmit(closeForm);
 
   body.addEventListener('keydown', close);
 
@@ -114,6 +147,9 @@ const openForm = () => {
   description.addEventListener('focusout', () => {
     body.addEventListener('keydown', close);
   });
+
+  scale();
+  filterSettings();
 };
 
 export {openForm};

@@ -16,4 +16,40 @@ function getCheckString (string, maxLength) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomNumber, getCheckString, isEscapeKey};
+const errorTamplate = document.querySelector('#error').content.querySelector('.error');
+const successTamplate = document.querySelector('#success').content.querySelector('.success');
+
+const showMessage = (template) => {
+  const fragment = document.createDocumentFragment();
+  const message = template.cloneNode(true);
+  fragment.append(message);
+  document.body.append(fragment);
+
+  const button = message.querySelector('[type="button"]');
+  const closeMessage = () => message.remove();
+  button.addEventListener('click', () => {
+    closeMessage();
+  });
+  const closeEsc = (evt) => {
+    if (isEscapeKey(evt)) {
+      closeMessage();
+    }
+  };
+  message.addEventListener('click', (evt) => {
+    if (!evt.target.children[1]) {
+      closeMessage();
+    }
+  });
+
+  document.body.addEventListener('keydown', closeEsc);
+};
+
+const showError = () => {
+  showMessage(errorTamplate);
+};
+
+const showSuccess = () => {
+  showMessage(successTamplate);
+};
+
+export {getRandomNumber, getCheckString, isEscapeKey, showError, showSuccess};
