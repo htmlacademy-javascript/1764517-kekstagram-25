@@ -1,8 +1,16 @@
-const getData = (onSuccess) => {
+const getData = (onSuccess, onFail) => {
   fetch('https://25.javascript.pages.academy/kekstagram/data')
     .then((response) => response.json())
     .then((miniatures) => {
       onSuccess(miniatures);
+    })
+    .then(() => {
+      const filters = document.querySelector('.img-filters');
+      filters.classList.remove('img-filters--inactive');
+      filters.classList.add('img-filters--active');
+    })
+    .catch(() => {
+      onFail();
     });
 };
 

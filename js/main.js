@@ -1,8 +1,9 @@
 import {getData} from './api.js';
 import {openForm} from './open-form.js';
-import {renderMiniatures} from './miniature.js';
+import {getDataError} from './util.js';
+import { filtration } from './filtration.js';
 
-getData(renderMiniatures);
+getData(filtration, getDataError);
 openForm();
 
 
