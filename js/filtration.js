@@ -2,10 +2,10 @@ import {renderMiniatures} from './miniature.js';
 
 const filtrationForm = document.querySelector('.img-filters__form');
 
-const getDefaultFiltration = (array) => array.slice();
-
 const getRandomFiltration = (array) => {
-
+  const copy = array.slice();
+  copy.sort(() => Math.random() - 0.5);
+  return copy.slice(0, 10);
 };
 
 const getDiscussedFiltration = (array) => array.slice().sort((a, b) => {
@@ -13,6 +13,8 @@ const getDiscussedFiltration = (array) => array.slice().sort((a, b) => {
     return 1;
   } else { return -1;}
 });
+
+const getDefaultFiltration = (array) => array.slice();
 
 
 const filtration = (photos) => {
