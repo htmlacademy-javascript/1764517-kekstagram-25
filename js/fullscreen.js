@@ -32,9 +32,10 @@ const getCommentElement = (miniature, visibleComments) => {
 
 
 const openPicture = (miniature) => {
+  const bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
   bigPicture.querySelector('.big-picture__img img').src = miniature.url;
   bigPicture.querySelector('.likes-count').textContent = miniature.likes;
-  bigPicture.querySelector('.comments-count').textContent = miniature.comments.length;
+  bigPictureCommentsCount.textContent = miniature.comments.length;
   bigPicture.querySelector('.social__caption').textContent = miniature.description;
   let commentShown = 5;
   getCommentElement(miniature, 5);
@@ -47,14 +48,15 @@ const openPicture = (miniature) => {
     commentsLoader.classList.remove('hidden');
   }
 
-  commentsLoader.addEventListener('click', () => {
-    if (commentShown >= bigPicture.querySelector('.comments-count').textContent) {
+  const cm = () => {
+    commentShown +=5;
+    getCommentElement(miniature, commentShown);
+    if (commentShown >= +bigPictureCommentsCount.textContent) {
       commentsLoader.classList.add('hidden');
-    } else {
-      commentShown +=5;
-      getCommentElement(miniature, commentShown);
     }
-  });
+  };
+
+  commentsLoader.addEventListener('click', cm);
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -62,6 +64,7 @@ const openPicture = (miniature) => {
   const closePhoto = () => {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
+    commentsLoader.removeEventListener('click', cm);
   };
   closeBigPicture.addEventListener ('click', () => {
     closePhoto();
