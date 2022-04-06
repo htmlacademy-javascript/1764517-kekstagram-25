@@ -6,6 +6,7 @@ const commentCounter = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const body = document.querySelector('body');
 const commentsList = document.querySelector('.social__comments');
+const displayedComments = document.querySelector('.displayed-comments');
 
 const getCommentElement = (miniature, visibleComments) => {
   while (commentsList.firstChild) {
@@ -38,6 +39,7 @@ const openPicture = (miniature) => {
   bigPictureCommentsCount.textContent = miniature.comments.length;
   bigPicture.querySelector('.social__caption').textContent = miniature.description;
   let commentShown = 5;
+  displayedComments.textContent = '5';
   getCommentElement(miniature, 5);
 
   if (miniature.comments.length < 5) {
@@ -48,33 +50,36 @@ const openPicture = (miniature) => {
     commentsLoader.classList.remove('hidden');
   }
 
-  const cm = () => {
+  const loadMore = () => {
     commentShown +=5;
     getCommentElement(miniature, commentShown);
+    displayedComments.textContent = commentShown;
     if (commentShown >= +bigPictureCommentsCount.textContent) {
       commentsLoader.classList.add('hidden');
+      displayedComments.textContent = bigPictureCommentsCount.textContent;
     }
   };
-
-  commentsLoader.addEventListener('click', cm);
-
-  bigPicture.classList.remove('hidden');
-  body.classList.add('modal-open');
 
   const closePhoto = () => {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
-    commentsLoader.removeEventListener('click', cm);
+    commentsLoader.removeEventListener('click', loadMore);
+    closeBigPicture.removeEventListener('click', closePhoto);
+    body.removeEventListener('keydown', closeEscape);
   };
-  closeBigPicture.addEventListener ('click', () => {
-    closePhoto();
-  });
 
-  body.addEventListener('keydown', (evt) => {
+  function closeEscape (evt) {
     if (isEscapeKey(evt)) {
       closePhoto();
     }
-  });
+  }
+
+  bigPicture.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  commentsLoader.addEventListener('click', loadMore);
+  closeBigPicture.addEventListener ('click', closePhoto);
+  body.addEventListener('keydown', closeEscape);
 };
 
 export{openPicture};
