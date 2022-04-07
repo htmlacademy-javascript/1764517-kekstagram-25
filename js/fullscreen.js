@@ -14,7 +14,7 @@ const getCommentElement = (miniature, visibleComments) => {
   }
   const comments = miniature.comments;
 
-  comments.slice().slice(0, visibleComments).forEach((comment) => {
+  comments.slice(0, visibleComments).forEach((comment) => {
     const commentItem = document.createElement('li');
     commentItem.classList.add('social__comment');
     commentsList.appendChild(commentItem);
