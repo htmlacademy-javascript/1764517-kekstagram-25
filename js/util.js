@@ -30,18 +30,19 @@ const showMessage = (template) => {
   button.addEventListener('click', () => {
     closeMessage();
   });
-  const closeEsc = (evt) => {
+  const onEsccapeClose = (evt) => {
     if (isEscapeKey(evt)) {
       closeMessage();
     }
   };
+
   message.addEventListener('click', (evt) => {
     if (!evt.target.children[1]) {
       closeMessage();
     }
   });
 
-  document.body.addEventListener('keydown', closeEsc);
+  document.body.addEventListener('keydown', onEsccapeClose);
 };
 
 const getDataError = () => {

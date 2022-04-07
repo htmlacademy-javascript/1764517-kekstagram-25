@@ -50,7 +50,7 @@ const openPicture = (miniature) => {
     commentsLoader.classList.remove('hidden');
   }
 
-  const loadMore = () => {
+  const onCommentsload = () => {
     commentShown +=5;
     getCommentElement(miniature, commentShown);
     displayedComments.textContent = commentShown;
@@ -60,26 +60,26 @@ const openPicture = (miniature) => {
     }
   };
 
-  const closePhoto = () => {
+  const onPhotoClose = () => {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
-    commentsLoader.removeEventListener('click', loadMore);
-    closeBigPicture.removeEventListener('click', closePhoto);
-    body.removeEventListener('keydown', closeEscape);
+    commentsLoader.removeEventListener('click', onCommentsload);
+    closeBigPicture.removeEventListener('click', onPhotoClose);
+    body.removeEventListener('keydown', onEscapeClose);
   };
 
-  function closeEscape (evt) {
+  function onEscapeClose (evt) {
     if (isEscapeKey(evt)) {
-      closePhoto();
+      onPhotoClose();
     }
   }
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
 
-  commentsLoader.addEventListener('click', loadMore);
-  closeBigPicture.addEventListener ('click', closePhoto);
-  body.addEventListener('keydown', closeEscape);
+  commentsLoader.addEventListener('click', onCommentsload);
+  closeBigPicture.addEventListener ('click', onPhotoClose);
+  body.addEventListener('keydown', onEscapeClose);
 };
 
 export{openPicture};

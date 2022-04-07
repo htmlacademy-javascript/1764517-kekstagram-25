@@ -1,3 +1,12 @@
+const SCALE_STEP = 25;
+const MAX_SCALE = 100;
+const MIN_SCALE = 25;
+const FILTER_CHROME = 'effects__preview--chrome';
+const FILTER_SEPIA = 'effects__preview--sepia';
+const FILTER_MARVIN = 'effects__preview--marvin';
+const FILTER_PHOBOS = 'effects__preview--phobos';
+const FILTER_HEAT = 'effects__preview--heat';
+
 const form = document.getElementById('upload-select-image');
 const effectValueInput = document.querySelector('.effect-level__value');
 const effectLevel = document.querySelector('.effect-level');
@@ -6,42 +15,31 @@ const imagePreview = document.querySelector('.img-upload__preview img');
 const effectList = document.querySelector('.effects__list');
 const scaleValue = document.querySelector('.scale__control--value');
 
-scaleValue.value = '100%';
-
 const noneFilterPreview = document.getElementById('effect-none');
-const filterChrome = 'effects__preview--chrome';
-const filterSepia = 'effects__preview--sepia';
-const filterMarvin = 'effects__preview--marvin';
-const filterPhobos = 'effects__preview--phobos';
-const filterHeat = 'effects__preview--heat';
-
 const scaleSmallerButton = document.querySelector('.scale__control--smaller');
 const scaleBiggerButton = document.querySelector('.scale__control--bigger');
-const scaleStep = 25;
-const maxScale = 100;
-const minScale = 25;
 
-const scale = () => {
+const changeZoom = () => {
   scaleSmallerButton.addEventListener('click', () => {
-    if (parseInt(scaleValue.value, 10) === minScale) {
+    if (parseInt(scaleValue.value, 10) === MIN_SCALE) {
       scaleSmallerButton.disabled = true;
       scaleBiggerButton.disabled = false;
     } else {
-      scaleValue.value = `${parseInt(scaleValue.value, 10) - scaleStep}%`;
+      scaleValue.value = `${parseInt(scaleValue.value, 10) - SCALE_STEP}%`;
       scaleSmallerButton.disabled = false;
       scaleBiggerButton.disabled = false;
-      imagePreview.style = `transform: scale(${parseInt(scaleValue.value, 10) / 100})`;
+      imagePreview.style.transform = `scale(${parseInt(scaleValue.value, 10) / 100})`;
     }
   });
   scaleBiggerButton.addEventListener('click', () => {
-    if (parseInt(scaleValue.value, 10) === maxScale) {
+    if (parseInt(scaleValue.value, 10) === MAX_SCALE) {
       scaleBiggerButton.disabled = true;
       scaleSmallerButton.disabled = false;
     } else {
-      scaleValue.value = `${parseInt(scaleValue.value, 10) + scaleStep}%`;
+      scaleValue.value = `${parseInt(scaleValue.value, 10) + SCALE_STEP}%`;
       scaleBiggerButton.disabled = false;
       scaleSmallerButton.disabled = false;
-      imagePreview.style = `transform: scale(${parseInt(scaleValue.value, 10) / 100})`;
+      imagePreview.style.transform = `scale(${parseInt(scaleValue.value, 10) / 100})`;
     }
   });
 };
@@ -72,11 +70,10 @@ const getChromeSettings = () => {
   });
 
   sliderEffect.noUiSlider.on('update', () => {
-    imagePreview.style = `filter: grayscale(${sliderEffect.noUiSlider.get()})`;
+    imagePreview.style.filter = `grayscale(${sliderEffect.noUiSlider.get()})`;
   });
   imagePreview.removeAttribute('class');
-  imagePreview.classList.add(filterChrome);
-  scaleValue.value = '100%';
+  imagePreview.classList.add(FILTER_CHROME);
 };
 
 const getSepiaSettings = () => {
@@ -91,11 +88,10 @@ const getSepiaSettings = () => {
   });
 
   sliderEffect.noUiSlider.on('update', () => {
-    imagePreview.style = `filter: sepia(${sliderEffect.noUiSlider.get()})`;
+    imagePreview.style.filter = `sepia(${sliderEffect.noUiSlider.get()})`;
   });
   imagePreview.removeAttribute('class');
-  imagePreview.classList.add(filterSepia);
-  scaleValue.value = '100%';
+  imagePreview.classList.add(FILTER_SEPIA);
 };
 
 const getMarvinSettings = () => {
@@ -110,11 +106,10 @@ const getMarvinSettings = () => {
   });
 
   sliderEffect.noUiSlider.on('update', () => {
-    imagePreview.style = `filter: invert(${sliderEffect.noUiSlider.get()}%)`;
+    imagePreview.style.filter = `invert(${sliderEffect.noUiSlider.get()}%)`;
   });
   imagePreview.removeAttribute('class');
-  imagePreview.classList.add(filterMarvin);
-  scaleValue.value = '100%';
+  imagePreview.classList.add(FILTER_MARVIN);
 };
 
 const getPhobosSettings = () => {
@@ -129,11 +124,10 @@ const getPhobosSettings = () => {
   });
 
   sliderEffect.noUiSlider.on('update', () => {
-    imagePreview.style = `filter: blur(${sliderEffect.noUiSlider.get()}px)`;
+    imagePreview.style.filter = `blur(${sliderEffect.noUiSlider.get()}px)`;
   });
   imagePreview.removeAttribute('class');
-  imagePreview.classList.add(filterPhobos);
-  scaleValue.value = '100%';
+  imagePreview.classList.add(FILTER_PHOBOS);
 };
 
 const getHeatSettings = () => {
@@ -148,12 +142,12 @@ const getHeatSettings = () => {
   });
 
   sliderEffect.noUiSlider.on('update', () => {
-    imagePreview.style = `filter: brightness(${sliderEffect.noUiSlider.get()})`;
+    imagePreview.style.filter = `brightness(${sliderEffect.noUiSlider.get()})`;
   });
   imagePreview.removeAttribute('class');
-  imagePreview.classList.add(filterHeat);
-  scaleValue.value = '100%';
+  imagePreview.classList.add(FILTER_HEAT);
 };
+
 
 const filterSettings = () => {
   form.addEventListener('change', () => {
@@ -168,37 +162,36 @@ const filterSettings = () => {
       imagePreview.classList.add(filter);
 
       switch (filter) {
-        case filterChrome:
+        case FILTER_CHROME:
           getChromeSettings();
           break;
-        case filterSepia:
+        case FILTER_SEPIA:
           getSepiaSettings();
           break;
 
-        case filterMarvin:
+        case FILTER_MARVIN:
           getMarvinSettings();
           break;
 
-        case filterPhobos:
+        case FILTER_PHOBOS:
           getPhobosSettings();
           break;
 
-        case filterHeat:
+        case FILTER_HEAT:
           getHeatSettings();
           break;
 
         default:
           effectValueInput.value = 0;
           imagePreview.removeAttribute('class');
-          imagePreview.removeAttribute('style');
+          imagePreview.style.filter = 'none';
           effectLevel.classList.add('hidden');
-          scaleValue.value = '100%';
           break;
       }
     }
   });
 };
 
-export{filterSettings, scale};
+export{filterSettings, changeZoom};
 
 
