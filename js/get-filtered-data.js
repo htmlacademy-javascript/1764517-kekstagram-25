@@ -18,7 +18,7 @@ const getDiscussedFiltration = (array) => array.slice().sort((a, b) => {
 const getDefaultFiltration = (array) => array.slice();
 
 
-const filtration = (photos) => {
+const filterOut = (photos) => {
   renderMiniatures(photos);
   const debouncedRender = debounce(renderMiniatures, 500);
   filtrationForm.addEventListener('click', (evt) => {
@@ -42,6 +42,6 @@ const filtration = (photos) => {
   });
 };
 
-export{filtration};
+export{filterOut};
 
 

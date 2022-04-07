@@ -1,7 +1,12 @@
 import {isEscapeKey} from './util.js';
 import {getCheckString, showError, showSuccess} from './util.js';
-import {filterSettings, scale} from './filter-settings.js';
+import {filterSettings, changeZoom} from './get-filter-settings.js';
 import {sendData} from './api.js';
+
+const MAX_DESCRIPTION_LENGTH = 140;
+const MAX_HASHTAGS_LENGTH = 5;
+const MAX_HASHTAG_LENGTH = 20;
+const INVALID_HASHTAG_LENGTH = 1;
 
 const form = document.getElementById('upload-select-image');
 const uploadFile = document.getElementById('upload-file');
@@ -16,7 +21,7 @@ const scaleValue = document.querySelector('.scale__control--value');
 const regExp = /^#[a-zа-яё0-9]+$/i;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const closeForm = () => {
+const onFormClose = () => {
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   imagePreview.removeAttribute('class');
@@ -37,7 +42,7 @@ function validateHashtags (value) {
   const space = ' ';
   const arrayHashtags = value.toLowerCase().trim().split(space);
 
-  if (arrayHashtags.length > 5) {
+  if (arrayHashtags.length > MAX_HASHTAGS_LENGTH) {
     return false;
   }
 
@@ -48,13 +53,13 @@ function validateHashtags (value) {
     if (!regExp.test(arrayHashtags[i])) {
       return false;
     }
-    if (arrayHashtags[i].length >= 20) {
+    if (arrayHashtags[i].length >= MAX_HASHTAG_LENGTH) {
       return false;
     }
-    if (arrayHashtags[i].length === 1) {
+    if (arrayHashtags[i].length === INVALID_HASHTAG_LENGTH) {
       return false;
     }
-    if (arrayHashtags.filter((val) => val === arrayHashtags[i]).length > 1) {
+    if (arrayHashtags.filter((val) => val === arrayHashtags[i]).length > INVALID_HASHTAG_LENGTH) {
       return false;
     }
   }
@@ -62,7 +67,7 @@ function validateHashtags (value) {
 }
 
 function validateDescription () {
-  if (getCheckString(description.value, 140)) {
+  if (getCheckString(description.value, MAX_DESCRIPTION_LENGTH)) {
     return true;
   }
   return false;
@@ -104,7 +109,7 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           showError();
           unblockSubmitButton();
-          closeForm();
+          onFormClose();
         },
         new FormData(evt.target),
       );
@@ -121,7 +126,7 @@ const openForm = () => {
     if (matches) {
       imagePreview.src = URL.createObjectURL(file);
     } else {
-      setTimeout(closeForm, 1);
+      setTimeout(onFormClose, 1);
       showError();
     }
 
@@ -130,37 +135,35 @@ const openForm = () => {
     body.classList.add('modal-open');
   });
 
-  closeFormButton.addEventListener('click', () => {
-    closeForm();
-  });
+  closeFormButton.addEventListener('click', onFormClose);
 
-  const close = (evt) => {
+  const onEscapeClose = (evt) => {
     if (isEscapeKey(evt)) {
-      closeForm();
+      onFormClose();
     }
   };
 
-  setUserFormSubmit(closeForm);
+  setUserFormSubmit(onFormClose);
 
-  body.addEventListener('keydown', close);
+  body.addEventListener('keydown', onEscapeClose);
 
   hashtags.addEventListener('focus', () => {
-    body.removeEventListener('keydown', close);
+    body.removeEventListener('keydown', onEscapeClose);
   });
 
   hashtags.addEventListener('focusout', () => {
-    body.addEventListener('keydown', close);
+    body.addEventListener('keydown', onEscapeClose);
   });
 
   description.addEventListener('focus', () => {
-    body.removeEventListener('keydown', close);
+    body.removeEventListener('keydown', onEscapeClose);
   });
 
   description.addEventListener('focusout', () => {
-    body.addEventListener('keydown', close);
+    body.addEventListener('keydown', onEscapeClose);
   });
 
-  scale();
+  changeZoom();
   filterSettings();
 };
 
