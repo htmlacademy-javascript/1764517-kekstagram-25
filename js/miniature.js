@@ -4,6 +4,10 @@ const similarListElement = document.querySelector('.pictures');
 const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const renderMiniatures = (similarPhotos) => {
+  const picturesArray = document.querySelectorAll('.picture');
+  picturesArray.forEach((elem) => {
+    elem.remove();
+  });
   const similarListFragment = document.createDocumentFragment();
   similarPhotos.forEach((photo) => {
     const userPhoto = similarPhotoTemplate.cloneNode(true);

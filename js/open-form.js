@@ -14,6 +14,7 @@ const submitButton = document.querySelector('.img-upload__submit');
 const imagePreview = document.querySelector('.img-upload__preview img');
 const scaleValue = document.querySelector('.scale__control--value');
 const regExp = /^#[a-zа-яё0-9]+$/i;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const closeForm = () => {
   uploadOverlay.classList.add('hidden');
@@ -113,6 +114,17 @@ const setUserFormSubmit = (onSuccess) => {
 
 const openForm = () => {
   uploadFile.addEventListener('change', () => {
+    const file = uploadFile.files[0];
+    const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+    if (matches) {
+      imagePreview.src = URL.createObjectURL(file);
+    } else {
+      setTimeout(closeForm, 1);
+      showError();
+    }
+
     scaleValue.value = '100%';
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');

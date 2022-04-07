@@ -44,6 +44,13 @@ const showMessage = (template) => {
   document.body.addEventListener('keydown', closeEsc);
 };
 
+const getDataError = () => {
+  errorTamplate.querySelector('h2').style.fontSize = '24px';
+  errorTamplate.querySelector('h2').textContent = 'Ошибка загрузки данных. Перезагрузите сртраницу';
+  errorTamplate.querySelector('button').textContent = 'ок';
+  showMessage(errorTamplate);
+};
+
 const showError = () => {
   showMessage(errorTamplate);
 };
@@ -52,4 +59,13 @@ const showSuccess = () => {
   showMessage(successTamplate);
 };
 
-export {getRandomNumber, getCheckString, isEscapeKey, showError, showSuccess};
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomNumber, getCheckString, isEscapeKey, showError, showSuccess, getDataError, debounce};
